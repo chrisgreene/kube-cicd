@@ -45,14 +45,17 @@ pipeline {
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'pks_client', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl delete all -l app=gocicd\""
+                        //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl delete all -l app=gocicd\""
+                        def result = sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get deployment gocicd ; echo $?\"" , returnStdout: true)
                     }
                 }
+                /*
                 kubernetesDeploy(
                   kubeconfigId: 'kubeconfig',
                   configs: 'kubernetes.yaml',
                   enableConfigSubstitution: true
                 ) 
+                */
             }
         }
         stage('Get Service IP') {
@@ -61,6 +64,7 @@ pipeline {
             }
             steps {
                 //milestone(1)
+                /*
                 retry(10) {
                     withCredentials([usernamePassword(credentialsId: 'pks_client', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                         script {
@@ -77,7 +81,7 @@ pipeline {
                             }
                         }
                     }
-                }
+                }*/
             }
         }
     }
