@@ -46,9 +46,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'pks_client', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
                         //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl delete all -l app=gocicd\""
-                        def result = sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get deployment gocicd\"" , returnStatus: true)
-                        echo result
-                        if (!result) {
+                        if (sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get deployment gocicd\"" , returnStatus: true) == 0 {
                             echo "Deployment exists"
                         } else {
                             echo "Deployment doesn't exist"
