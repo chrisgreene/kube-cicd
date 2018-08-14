@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: gocicd
+spec:
+  type: LoadBalancer
+  selector:
+    app: gocicd
+  ports:
+  - protocol: TCP
+    port: 8181
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gocicd
+  labels:
+    app: gocicd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gocicd
+  template:
+    metadata:
+      labels:
+        app: gocicd
+    spec:
+      containers:
+      - name: gocicd
+        image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
+        ports:
+        - containerPort: 8181
