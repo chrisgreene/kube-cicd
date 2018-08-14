@@ -64,8 +64,8 @@ pipeline {
             }
             steps {
                 script {
-                     
-                    }
+                    def result = sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"ls\"" , returnStdout: true)     
+                }
                 //milestone(1)
                 /*
                 retry(10) {
