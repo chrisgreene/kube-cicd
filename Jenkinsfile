@@ -47,6 +47,7 @@ pipeline {
                     script {
                         //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl delete all -l app=gocicd\""
                         def result = sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get deployment gocicd ; echo \$?\"" , returnStdout: true)
+                        echo result
                         if (!result) {
                             echo "Deployment exists"
                         } else {
