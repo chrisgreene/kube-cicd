@@ -48,7 +48,7 @@ pipeline {
                         //sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl delete all -l app=gocicd\""
                         if (sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get deployment gocicd\"" , returnStatus: true) == 0) {
                             echo "Deployment exists"
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl set image deployment gocicd=${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl set image deployment gocicd gocicd=${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}\""
                         } else {
                             echo "Deployment doesn't exist"
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl run gocicd --image ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}\""
