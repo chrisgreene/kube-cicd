@@ -53,12 +53,14 @@ pipeline {
                             echo "Deployment doesn't exist"
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl run gocicd --image ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}\""
                         }
-						if (sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get svc gocicd\"" , returnStatus: true) == 0) {
-                            echo "Service exists"
-                        } else {
-                            echo "Service doesn't exist"
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl expose deployment --type LoadBalancer --port 80\""
-                        }
+			retry (10) {
+			    if (sh(script: "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl get svc gocicd\"" , returnStatus: true) == 0) {
+                                echo "Service exists"
+                            } else {
+                                echo "Service doesn't exist"
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl expose deployment --type LoadBalancer --port 80\""
+                            }
+			}
                     }
                 }
                 /*
