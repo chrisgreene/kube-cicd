@@ -98,8 +98,9 @@ pipeline {
                              echo: 'caught error: $err'
                             }
                         }
-                    }
 		    */
+
+}
                 }
             }
         }
