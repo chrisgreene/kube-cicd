@@ -58,7 +58,7 @@ pipeline {
                                 echo "Service exists"
                             } else {
                                 echo "Service doesn't exist"
-                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl expose deployment --type LoadBalancer --port 80\""
+                                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$pks_client \"kubectl expose deployment gocicd --type LoadBalancer --port 80\""
                             }
 			}
                     }
